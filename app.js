@@ -13,6 +13,6 @@ app.use("/api/post",postRoute)
 
 mongoose.connect("mongodb+srv://jeffjoev:jeffinjosev@cluster0.3tagu6i.mongodb.net/blogUserDb?retryWrites=true&w=majority")
 
-app.listen(3001,()=>{
+app.listen(3000,()=>{
     console.log("Server Running....")
 })
