@@ -3,8 +3,21 @@ const express=require("express")
 const router=express.Router()
 const userModel=require("../models/userModel")
 
+const bcrypt=require("bcryptjs")
+
+hashPasswordGenerator=async(pass)=>{
+    const salt=await bcrypt.genSalt(10)
+    return bcrypt.hash(pass,salt)
+}
+
 router.post("/signup",async(req,res)=>{
-    let data=req.body
+
+    let {data}={"data":req.body}
+    let password=req.body.userPword
+    console.log(password)
+    const hashedPassword=await hashPasswordGenerator(password)
+    console.log(hashedPassword)
+    data.userPword=hashedPassword
     let userObj=new userModel(data)
     let result=await userObj.save()
     res.json({
