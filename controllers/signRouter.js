@@ -28,10 +28,8 @@ router.post("/signup",async(req,res)=>{
 router.post("/signin",async(req,res)=>{
     let input=req.body
     let email=req.body.userEmail
-    let pword=req.body.userPword
-    let edata=await userModel.findOne({"userEmail":email})
-    let pdata=await userModel.findOne({"userPword":pword})
-    if(!edata)
+    let data=await userModel.findOne({"userEmail":email})
+    if(!data)
     {
         return res.json(
             {
@@ -40,7 +38,13 @@ router.post("/signin",async(req,res)=>{
             
         )
     }
-    if(!pdata)
+    console.log(data)
+    let dbPassword=data.userPword
+    console.log(dbPassword)
+    let inputPassword=req.body.userPword
+    console.log(inputPassword)
+    const match=await bcrypt.compare(inputPassword,dbPassword)
+    if(!match)
     {
         return res.json(
             {
@@ -51,7 +55,7 @@ router.post("/signin",async(req,res)=>{
     }
     res.json(
         {
-            status:"success"
+            status:"success","userdata":data
         }
     )
 })
@@ -62,6 +66,7 @@ router.get("/viewusers", async (req, res) => {
     res.json(result);
     
 });
+
 
 
 module.exports=router
