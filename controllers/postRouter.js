@@ -14,7 +14,7 @@ router.post("/addpost",async(req,res)=>{
 })
 
 router.get("/viewpost",async(req,res)=>{
-    let result=await postModel.find()
+    let result=await postModel.find().populate("userId","userName userPhone userEmail -_id").exec()
     res.json(result)
 })
 
